@@ -54,9 +54,13 @@ function pesquisar() {
 					passou: notaTotal >= 20
 				};
 			}
-			document.querySelector(".nDiv > .nH2").textContent += boletim.DsNome;
+			document.querySelector(".nDiv > .nH2").textContent = "Nome: " + boletim.DsNome;
 			var porcetagem = (porcetagemTotal / porcetagemQuatidade).toPrecision(4);
-			document.querySelector(".pDiv > .pH2").textContent += porcetagem + "%";
+			document.querySelector(".pDiv > .pH2").textContent = "Porcetagem de presença: " + porcetagem + "%";
+			var lista = document.querySelector(".ntDiv > .ntTable > tbody");
+			while (lista.firstChild) {  
+				lista.removeChild(lista.lastChild);
+			}
 			for (var i = 0; i < notas.length; i++) {
 				var tdDisciplina = document.createElement("td");
 				tdDisciplina.textContent = notas[i].disciplina;
