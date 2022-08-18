@@ -74,6 +74,8 @@ function pesquisar() {
 				tr.appendChild(tdPassou);
 				document.querySelector(".ntDiv > .ntTable > tbody").appendChild(tr);
 			}
+		} else if (request.status == 299) {
+			alert(JSON.parse(request.responseText).mensagem);
 		}
 	}
 	var parametros = "nrRa=" + Ra + "&nrDigRa=" + DigRa + "&dsUfRa=" + UfRa + "&dtNascimento=" + Nascimento + "&nrAnoLetivo=" + AnoLetivo;
