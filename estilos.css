@@ -35,7 +35,8 @@ body {
 	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-.pH2 {
+.pH2,
+.nH2 {
 	color: white;
 	text-align: center;
 }

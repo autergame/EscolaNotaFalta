@@ -54,6 +54,7 @@ function pesquisar() {
 					passou: notaTotal >= 20
 				};
 			}
+			document.querySelector(".nDiv > .nH2").textContent += boletim.DsNome;
 			var porcetagem = (porcetagemTotal / porcetagemQuatidade).toPrecision(4);
 			document.querySelector(".pDiv > .pH2").textContent += porcetagem + "%";
 			for (var i = 0; i < notas.length; i++) {
