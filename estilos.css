@@ -47,6 +47,14 @@ body {
 	display: inline-block;
 }
 
+.pPre {
+	color: white;
+	margin-top: 0px;
+	font-family: auto;
+	margin-bottom: 0px;
+	display: inline-block;
+}
+
 .pDiv {
 	text-align: center;
 }
@@ -56,6 +64,12 @@ body {
 	padding-top: 10px;
 	line-height: 34px;
 	text-align: center;
+}
+
+.bFormDiv label {
+	color: white;
+	font-size: 14px;
+    font-weight: 700;
 }
 
 .bFormDiv input,
@@ -78,14 +92,20 @@ body {
 	border-collapse: collapse;
 }
 
-.ntTable th,
-.ntTable td {
+.ntTable th {
 	padding: 5px;
 	color: white;
+	font-size: 14px;
+    font-weight: 700;
 	border: 1px solid #000;
 	background-color: rgb(32, 32, 32);
 }
 
 .ntTable td {
+	padding: 5px;
+	color: white;
+	font-size: 14px;
+    font-weight: 700;
+	border: 1px solid #000;
 	background-color: rgb(64, 64, 64);
 }

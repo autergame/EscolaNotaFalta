@@ -69,20 +69,75 @@ function pesquisar() {
 				}
 			}
 
-			document.querySelector(".nDiv > .nH2").textContent = "Nome: " + boletim.DsNome;
-			
+			var nDiv = document.querySelector(".nDiv");
+
+			var nH2 = document.createElement("h2");
+			nH2.className = "nH2";
+			nH2.textContent = "Nome: " + boletim.DsNome;
+			nDiv.appendChild(nH2);
+
 			var porcetagem = (porcetagemTotal / porcetagemQuatidade).toPrecision(4);
-			document.querySelector(".pDiv > .pnH2").textContent = porcetagem + "%";
+
+			var pDiv = document.querySelector(".pDiv");
+
+			var pH2 = document.createElement("h2");
+			pH2.className = "pH2";
+
+			var pPre = document.createElement("pre");
+			pPre.className = "pPre";
+			pPre.textContent = "Porcentagem de presença: ";
+			pH2.appendChild(pPre);
+
+			pDiv.appendChild(pH2);
+
+			var pnH2 = document.createElement("h2");
+			pnH2.className = "pnH2";
+			pnH2.textContent = porcetagem + "%";
 			if (porcetagem >= 75) {
-				document.querySelector(".pDiv > .pnH2").style = "color: rgb(0, 255, 0);"
+				pnH2.style = "color: rgb(0, 255, 0);"
 			} else {
-				document.querySelector(".pDiv > .pnH2").style = "color: rgb(255, 0, 0);"
+				pnH2.style = "color: rgb(255, 0, 0);"
+			}
+			pDiv.appendChild(pnH2);
+
+			var mostrarPrecisa = false;
+			for (var i = 0; i < notas.length; i++) {
+				if (notas[i].passou == false) {
+					mostrarPrecisa = true;
+					break;
+				}
 			}
 
-			var lista = document.querySelector(".ntDiv > .ntTable > tbody");
-			while (lista.firstChild) {
-				lista.removeChild(lista.lastChild);
+			var ntDiv = document.querySelector(".ntDiv");
+
+			var ntTable = document.createElement("table");
+			ntTable.className = "ntTable";
+
+			var ntTr = document.createElement("tr");
+
+			var ntThDisciplina = document.createElement("th");
+			ntThDisciplina.textContent = "Disciplina";
+			ntTr.appendChild(ntThDisciplina);
+
+			var ntThNota = document.createElement("th");
+			ntThNota.textContent = "Nota total";
+			ntTr.appendChild(ntThNota);
+
+			var ntThPassou = document.createElement("th");
+			ntThPassou.textContent = "Passou";
+			ntTr.appendChild(ntThPassou);
+
+			if (mostrarPrecisa) {
+				var ntThPrecisa = document.createElement("th");
+				ntThPrecisa.textContent = "Precisa";
+				ntTr.appendChild(ntThPrecisa);
 			}
+
+			var ntThead = document.createElement("thead");
+			ntThead.appendChild(ntTr);
+			ntTable.appendChild(ntThead);
+
+			var ntTbody = document.createElement("tbody");
 
 			for (var i = 0; i < notas.length; i++) {
 				var tr = document.createElement("tr");
@@ -104,8 +159,20 @@ function pesquisar() {
 				}
 				tr.appendChild(tdPassou);
 
-				document.querySelector(".ntDiv > .ntTable > tbody").appendChild(tr);
+				if (mostrarPrecisa) {
+					var tdPrecisa = document.createElement("td");
+					var precisa = 20 - notas[i].notaTotal;
+					if (precisa > 0) {
+						tdPrecisa.textContent = precisa;
+					}
+					tr.appendChild(tdPrecisa);
+				}
+
+				ntTbody.appendChild(tr);
 			}
+
+			ntTable.appendChild(ntTbody);
+			ntDiv.appendChild(ntTable);
 		} else if (request.status == 299) {
 			alert(JSON.parse(request.responseText).mensagem);
 		}
