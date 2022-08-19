@@ -33,28 +33,44 @@ function pesquisar() {
 			var porcetagemTotal = 0;
 			var porcetagemQuatidade = 0;
 			var disciplinas = boletim.TpsEnsino[0].Unidades[0].Disciplinas;
+
 			for (var i = 0; i < disciplinas.length; i++) {
 				var notaTotal = 0;
+				var notasNulas = 0;
+				var frequenciaNulas = 0;
+				var engajamentos = ["ET", "ES", "EP"];
 				var bimestres = disciplinas[i].Bimestres;
+				
 				for (var j = 0; j < bimestres.length; j++) {
 					var frequencia = parseInt(bimestres[j].DsPFrequencia.replace(/[^0-9]/g, ""), 10);
 					if (!isNaN(frequencia)) {
 						porcetagemTotal += frequencia;
 						porcetagemQuatidade += 1;
+					} else {
+						frequenciaNulas += 1;
 					}
 					var nota = parseFloat(bimestres[j].DsNota.replace(/[^0-9.]/g, ""));
 					if (!isNaN(nota)) {
 						notaTotal += nota;
+					} else {
+						notasNulas += 1;
 					}
 				}
-				var nomeDisciplina = disciplinas[i].DsDisciplina;
-				notas[i] = {
-					disciplina: capitalizarPrimeiraLetra(nomeDisciplina),
-					notaTotal: notaTotal,
-					passou: notaTotal >= 20
-				};
+
+				if (engajamentos.some(word => bimestres[0].DsNota == word) == false) {
+					if (notasNulas != bimestres.length && frequenciaNulas != bimestres.length) {
+						var nomeDisciplina = disciplinas[i].DsDisciplina;
+						notas.push({
+							disciplina: capitalizarPrimeiraLetra(nomeDisciplina),
+							notaTotal: notaTotal,
+							passou: notaTotal >= 20,
+						});
+					}
+				}
 			}
+
 			document.querySelector(".nDiv > .nH2").textContent = "Nome: " + boletim.DsNome;
+			
 			var porcetagem = (porcetagemTotal / porcetagemQuatidade).toPrecision(4);
 			document.querySelector(".pDiv > .pnH2").textContent = porcetagem + "%";
 			if (porcetagem >= 75) {
@@ -62,15 +78,23 @@ function pesquisar() {
 			} else {
 				document.querySelector(".pDiv > .pnH2").style = "color: rgb(255, 0, 0);"
 			}
+
 			var lista = document.querySelector(".ntDiv > .ntTable > tbody");
-			while (lista.firstChild) {  
+			while (lista.firstChild) {
 				lista.removeChild(lista.lastChild);
 			}
+
 			for (var i = 0; i < notas.length; i++) {
+				var tr = document.createElement("tr");
+
 				var tdDisciplina = document.createElement("td");
 				tdDisciplina.textContent = notas[i].disciplina;
+				tr.appendChild(tdDisciplina);
+
 				var tdNotaTotal = document.createElement("td");
 				tdNotaTotal.textContent = notas[i].notaTotal;
+				tr.appendChild(tdNotaTotal);
+
 				var tdPassou = document.createElement("td");
 				tdPassou.textContent = notas[i].passou ? "Sim" : "Não";
 				if (notas[i].passou) {
@@ -78,10 +102,8 @@ function pesquisar() {
 				} else {
 					tdPassou.style = "background-color: rgb(128, 0, 0);"
 				}
-				var tr = document.createElement("tr");
-				tr.appendChild(tdDisciplina);
-				tr.appendChild(tdNotaTotal);
 				tr.appendChild(tdPassou);
+
 				document.querySelector(".ntDiv > .ntTable > tbody").appendChild(tr);
 			}
 		} else if (request.status == 299) {
