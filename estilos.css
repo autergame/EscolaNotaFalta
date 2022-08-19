@@ -35,9 +35,19 @@ body {
 	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-.pH2,
 .nH2 {
 	color: white;
+	text-align: center;
+}
+
+.pH2,
+.pnH2 {
+	color: white;
+	margin-top: 0px;
+	display: inline-block;
+}
+
+.pDiv {
 	text-align: center;
 }
 

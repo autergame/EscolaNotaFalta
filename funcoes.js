@@ -56,7 +56,12 @@ function pesquisar() {
 			}
 			document.querySelector(".nDiv > .nH2").textContent = "Nome: " + boletim.DsNome;
 			var porcetagem = (porcetagemTotal / porcetagemQuatidade).toPrecision(4);
-			document.querySelector(".pDiv > .pH2").textContent = "Porcetagem de presença: " + porcetagem + "%";
+			document.querySelector(".pDiv > .pnH2").textContent = porcetagem + "%";
+			if (porcetagem >= 75) {
+				document.querySelector(".pDiv > .pnH2").style = "color: rgb(0, 255, 0);"
+			} else {
+				document.querySelector(".pDiv > .pnH2").style = "color: rgb(255, 0, 0);"
+			}
 			var lista = document.querySelector(".ntDiv > .ntTable > tbody");
 			while (lista.firstChild) {  
 				lista.removeChild(lista.lastChild);
@@ -68,6 +73,11 @@ function pesquisar() {
 				tdNotaTotal.textContent = notas[i].notaTotal;
 				var tdPassou = document.createElement("td");
 				tdPassou.textContent = notas[i].passou ? "Sim" : "Não";
+				if (notas[i].passou) {
+					tdPassou.style = "background-color: rgb(0, 128, 0);"
+				} else {
+					tdPassou.style = "background-color: rgb(128, 0, 0);"
+				}
 				var tr = document.createElement("tr");
 				tr.appendChild(tdDisciplina);
 				tr.appendChild(tdNotaTotal);
