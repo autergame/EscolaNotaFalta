@@ -4,9 +4,9 @@ function capitalizarPrimeiraLetra(texto) {
 }
 
 function formatarData(data) {
-	var dia = '' + data.getDate(),
-	    mes = '' + (data.getMonth() + 1),
-	    ano = '' + data.getFullYear();
+	var dia = '' + (data.getDate() + 1),
+		mes = '' + (data.getMonth() + 1),
+		ano = '' + data.getFullYear();
 	if (dia.length < 2) dia = '0' + dia;
 	if (mes.length < 2) mes = '0' + mes;
 	return [dia, mes, ano].join('/');
@@ -16,19 +16,19 @@ function pesquisar() {
 	var Ra = document.getElementById("txtNrRa").value;
 	var DigRa = document.getElementById("txtNrDigRa").value;
 	var UfRa = document.getElementById("ddlUfRa").value;
-	var Nascimento = document.getElementById("txtDtNascimento").valueAsDate;
+	var Nascimento = document.getElementById("txtDtNascimento");
 
-	if (Ra.length == 0 || DigRa.length == 0 || UfRa.length == 0) {
+	if (Ra.length == 0 || DigRa.length == 0 || UfRa.length == 0 || Nascimento.value.length == 0) {
 		alert("Preencha todos os campos!");
 		return;
 	}
 
-        Nascimento = formatarData(Nascimento);
+	var DataNascimento = formatarData(Nascimento.valueAsDate);
 
 	window.localStorage.setItem("Ra", Ra);
 	window.localStorage.setItem("DigRa", DigRa);
 	window.localStorage.setItem("UfRa", UfRa);
-	window.localStorage.setItem("Nascimento", Nascimento);
+	window.localStorage.setItem("Nascimento", Nascimento.valueAsDate);
 
 	var AnoLetivo = new Date().getFullYear().toString();
 
@@ -51,7 +51,7 @@ function pesquisar() {
 				var frequenciaNulas = 0;
 				var engajamentos = ["ET", "ES", "EP"];
 				var bimestres = disciplinas[i].Bimestres;
-				
+
 				for (var j = 0; j < bimestres.length; j++) {
 					var frequencia = parseInt(bimestres[j].DsPFrequencia.replace(/[^0-9]/g, ""), 10);
 					if (!isNaN(frequencia)) {
@@ -188,7 +188,7 @@ function pesquisar() {
 			alert(JSON.parse(request.responseText).mensagem);
 		}
 	}
-	var parametros = "nrRa=" + Ra + "&nrDigRa=" + DigRa + "&dsUfRa=" + UfRa + "&dtNascimento=" + Nascimento + "&nrAnoLetivo=" + AnoLetivo;
+	var parametros = "nrRa=" + Ra + "&nrDigRa=" + DigRa + "&dsUfRa=" + UfRa + "&dtNascimento=" + DataNascimento + "&nrAnoLetivo=" + AnoLetivo;
 	request.open("GET", "https://sed.educacao.sp.gov.br/Boletim/GerarBoletimUnificadoExterno?" + parametros, true);
 	request.send()
 }

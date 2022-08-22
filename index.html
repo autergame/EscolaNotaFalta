@@ -64,7 +64,7 @@
 	document.getElementById("txtNrRa").value = localStorage.getItem("Ra");
 	document.getElementById("txtNrDigRa").value = localStorage.getItem("DigRa");
 	document.getElementById("ddlUfRa").value = localStorage.getItem("UfRa");
-	document.getElementById("txtDtNascimento").value = localStorage.getItem("Nascimento");
+	document.getElementById("txtDtNascimento").valueAsDate = new Date(localStorage.getItem("Nascimento"))
 </script>
 <script src="funcoes.js"></script>
 
