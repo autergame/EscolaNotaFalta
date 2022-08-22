@@ -3,16 +3,27 @@ function capitalizarPrimeiraLetra(texto) {
 	return textoMenor.charAt(0).toUpperCase() + textoMenor.slice(1);
 }
 
+function formatarData(data) {
+	var dia = '' + data.getDate(),
+	    mes = '' + (data.getMonth() + 1),
+	    ano = '' + data.getFullYear();
+	if (dia.length < 2) dia = '0' + dia;
+	if (mes.length < 2) mes = '0' + mes;
+	return [dia, mes, ano].join('/');
+}
+
 function pesquisar() {
 	var Ra = document.getElementById("txtNrRa").value;
 	var DigRa = document.getElementById("txtNrDigRa").value;
 	var UfRa = document.getElementById("ddlUfRa").value;
-	var Nascimento = document.getElementById("txtDtNascimento").value;
+	var Nascimento = document.getElementById("txtDtNascimento").valueAsDate;
 
-	if (Ra.length == 0 || DigRa.length == 0 || UfRa.length == 0 || Nascimento.length == 0) {
+	if (Ra.length == 0 || DigRa.length == 0 || UfRa.length == 0) {
 		alert("Preencha todos os campos!");
 		return;
 	}
+
+        Nascimento = formatarData(Nascimento);
 
 	window.localStorage.setItem("Ra", Ra);
 	window.localStorage.setItem("DigRa", DigRa);
