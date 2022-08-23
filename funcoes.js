@@ -23,7 +23,7 @@ function pesquisar() {
 		return;
 	}
 
-	var DataNascimento = formatarData(Nascimento.valueAsDate);
+	var DataNascimento = formatarData(new Date(Nascimento.valueAsDate.toISOString()));
 
 	window.localStorage.setItem("Ra", Ra);
 	window.localStorage.setItem("DigRa", DigRa);
