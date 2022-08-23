@@ -23,7 +23,7 @@ function pesquisar() {
 		return;
 	}
 
-	var DataNascimento = formatarData(new Date(Nascimento.valueAsDate.toLocaleString('pt-BR', {timeZone: 'UTC'})));
+	var DataNascimento = formatarData(new Date(Nascimento.valueAsDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'})));
 
 	window.localStorage.setItem("Ra", Ra);
 	window.localStorage.setItem("DigRa", DigRa);
