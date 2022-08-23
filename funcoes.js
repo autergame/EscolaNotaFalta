@@ -4,7 +4,7 @@ function capitalizarPrimeiraLetra(texto) {
 }
 
 function formatarData(data) {
-	var dia = '' + (data.getDate() + 1),
+	var dia = '' + data.getDate(),
 		mes = '' + (data.getMonth() + 1),
 		ano = '' + data.getFullYear();
 	if (dia.length < 2) dia = '0' + dia;
