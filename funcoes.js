@@ -163,6 +163,10 @@ function criarTabela(dDiv, notas) {
 	ntThDisciplina.textContent = "Disciplina";
 	ntTr.appendChild(ntThDisciplina);
 
+	var ntThFrequencia = document.createElement("th");
+	ntThFrequencia.textContent = "Frequência total";
+	ntTr.appendChild(ntThFrequencia);
+
 	var ntThNota = document.createElement("th");
 	ntThNota.textContent = "Nota total";
 	ntTr.appendChild(ntThNota);
