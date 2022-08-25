@@ -14,6 +14,7 @@ function analisarBoletim(boletim) {
 		var notaNulas = 0;
 		var frequenciaTotal = 0
 		var frequenciaNulas = 0;
+		var frequenciaQuantidade = 0;
 		var engajamentos = ["ET", "ES", "EP"];
 		var bimestres = disciplinas[i].Bimestres;
 
@@ -22,6 +23,7 @@ function analisarBoletim(boletim) {
 			if (!isNaN(frequencia)) {
 				frequenciaTotal += frequencia;
 				porcentagemTotal += frequencia;
+				frequenciaQuantidade += 1;
 				porcentagemQuatidade += 1;
 			} else {
 				frequenciaNulas += 1;
@@ -34,7 +36,7 @@ function analisarBoletim(boletim) {
 			}
 		}
 
-		frequenciaTotal = (frequenciaTotal / bimestres.length).toPrecision(4);
+		frequenciaTotal = (frequenciaTotal / frequenciaQuantidade).toPrecision(4);
 
 		if (engajamentos.some(word => bimestres[0].DsNota == word) == false) {
 			if (notaNulas != bimestres.length && frequenciaNulas != bimestres.length) {
