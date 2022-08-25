@@ -34,6 +34,8 @@ function analisarBoletim(boletim) {
 			}
 		}
 
+		frequenciaTotal = frequenciaTotal / bimestres.length;
+
 		if (engajamentos.some(word => bimestres[0].DsNota == word) == false) {
 			if (notaNulas != bimestres.length && frequenciaNulas != bimestres.length) {
 				var nomeDisciplina = disciplinas[i].DsDisciplina;
@@ -196,7 +198,7 @@ function criarTabela(dDiv, notas) {
 		tr.appendChild(tdDisciplina);
 
 		var tdFrequenciaTotal = document.createElement("td");
-		tdFrequenciaTotal.textContent = notas[i].frequenciaTotal;
+		tdFrequenciaTotal.textContent = notas[i].frequenciaTotal + '%';
 		tr.appendChild(tdFrequenciaTotal);
 
 		var tdNotaTotal = document.createElement("td");
