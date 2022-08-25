@@ -34,7 +34,7 @@ function analisarBoletim(boletim) {
 			}
 		}
 
-		frequenciaTotal = frequenciaTotal / bimestres.length;
+		frequenciaTotal = (frequenciaTotal / bimestres.length).toPrecision(4);
 
 		if (engajamentos.some(word => bimestres[0].DsNota == word) == false) {
 			if (notaNulas != bimestres.length && frequenciaNulas != bimestres.length) {
