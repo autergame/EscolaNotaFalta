@@ -5,13 +5,14 @@ function capitalizarPrimeiraLetra(texto) {
 
 function analisarBoletim(boletim) {
 	var notas = [];
-	var porcetagemTotal = 0;
-	var porcetagemQuatidade = 0;
+	var porcentagemTotal = 0;
+	var porcentagemQuatidade = 0;
 	var disciplinas = boletim.TpsEnsino[0].Unidades[0].Disciplinas;
 
 	for (var i = 0; i < disciplinas.length; i++) {
 		var notaTotal = 0;
-		var notasNulas = 0;
+		var notaNulas = 0;
+		var frequenciaTotal = 0
 		var frequenciaNulas = 0;
 		var engajamentos = ["ET", "ES", "EP"];
 		var bimestres = disciplinas[i].Bimestres;
@@ -19,8 +20,9 @@ function analisarBoletim(boletim) {
 		for (var j = 0; j < bimestres.length; j++) {
 			var frequencia = parseInt(bimestres[j].DsPFrequencia.replace(/[^0-9]/g, ""), 10);
 			if (!isNaN(frequencia)) {
-				porcetagemTotal += frequencia;
-				porcetagemQuatidade += 1;
+				frequenciaTotal += frequencia;
+				porcentagemTotal += frequencia;
+				porcentagemQuatidade += 1;
 			} else {
 				frequenciaNulas += 1;
 			}
@@ -28,15 +30,16 @@ function analisarBoletim(boletim) {
 			if (!isNaN(nota)) {
 				notaTotal += nota;
 			} else {
-				notasNulas += 1;
+				notaNulas += 1;
 			}
 		}
 
 		if (engajamentos.some(word => bimestres[0].DsNota == word) == false) {
-			if (notasNulas != bimestres.length && frequenciaNulas != bimestres.length) {
+			if (notaNulas != bimestres.length && frequenciaNulas != bimestres.length) {
 				var nomeDisciplina = disciplinas[i].DsDisciplina;
 				notas.push({
 					disciplina: capitalizarPrimeiraLetra(nomeDisciplina),
+					frequenciaTotal: frequenciaTotal,
 					notaTotal: notaTotal,
 					passou: notaTotal >= 20,
 				});
@@ -44,9 +47,9 @@ function analisarBoletim(boletim) {
 		}
 	}
 
-	var porcetagem = (porcetagemTotal / porcetagemQuatidade).toPrecision(4);
+	var porcentagem = (porcentagemTotal / porcentagemQuatidade).toPrecision(4);
 
-	return [notas, porcetagem];
+	return [notas, porcentagem];
 }
 
 function pegarBoletim(textoRetornado) {
@@ -187,6 +190,10 @@ function criarTabela(dDiv, notas) {
 		var tdDisciplina = document.createElement("td");
 		tdDisciplina.textContent = notas[i].disciplina;
 		tr.appendChild(tdDisciplina);
+
+		var tdFrequenciaTotal = document.createElement("td");
+		tdFrequenciaTotal.textContent = notas[i].frequenciaTotal;
+		tr.appendChild(tdFrequenciaTotal);
 
 		var tdNotaTotal = document.createElement("td");
 		tdNotaTotal.textContent = notas[i].notaTotal;
