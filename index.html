@@ -2,8 +2,8 @@
 
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="estilos.css">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+	<link rel="stylesheet" href="estilos.css">
 </head>
 
 <body>
@@ -58,12 +58,72 @@
 	</div>
 	<div class="dDiv"></div>
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+	integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js"
+	integrity="sha512-zP5W8791v1A6FToy+viyoyUUyjCzx+4K8XZCKzW28AnCoepPNIXecxh9mvGuy3Rt78OzEsU+VCvcObwAMvBAww=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css"
+	integrity="sha512-0V10q+b1Iumz67sVDL8LPFZEEavo6H/nBSyghr7mm9JEQkOAm91HNoZQRvQdjennBb/oEuW+8oZHVpIKq+d25g=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+	.jconfirm.jconfirm-dark .jconfirm-bg {
+		background-color: rgb(0, 0, 0);
+		opacity: .5
+	}
+
+	.jconfirm.jconfirm-dark .jconfirm-box {
+		width: 50%;
+		height: 50%;
+	}
+
+	.jconfirm.jconfirm-dark .jconfirm-box .jconfirm-content {
+		color: white;
+		font-size: 20px;
+	}
+</style>
+
 <script>
+	if (localStorage.getItem("Aviso") != "aceito") {
+		$.confirm({
+			theme: 'dark',
+			type: "red",
+			typeAnimated: false,
+			title: "<strong>ATENÇÃO</strong>",
+			content:
+				"Este site <strong>NÃO</strong> é o oficial do Governo.<br>" +
+				"É um projeto pessoal que utiliza API de dados de boletim da <a href=\"https://sed.educacao.sp.gov.br/\">Secretaria Escolar Digital</a>.<br>" +
+				"Não me responsabilizo pelos dados exibidos ou como serão utilizados, qualquer dúvida, favor visualizar as informações diretamente no seu <a href=\"https://sed.educacao.sp.gov.br/boletim/boletimescolar\">Boletim</a>.<br>" +
+				"Observação: O cálculo do site é baseado nos bimestres que estão no boletim, que geralmente são bimestres passados, então é provável que o atual bimestre não seja contabilizado.<br>" +
+				"<br><strong>Você aceita esses termos?</strong>",
+			buttons: {
+				aceito: {
+					text: "Aceito!",
+					btnClass: "btn-green",
+					action: function () {
+						window.localStorage.setItem("Aviso", "aceito");
+					}
+				},
+				naoAceito: {
+					text: "Não aceito!",
+					btnClass: "btn-red",
+					action: function () {
+						window.location.href = "https://google.com.br";
+					}
+				}
+			}
+		});
+	}
+
 	document.getElementById("txtNrRa").value = localStorage.getItem("Ra");
 	document.getElementById("txtNrDigRa").value = localStorage.getItem("DigRa");
 	document.getElementById("ddlUfRa").value = localStorage.getItem("UfRa");
 	document.getElementById("txtDtNascimento").valueAsDate = new Date(localStorage.getItem("Nascimento"))
 </script>
+
 <script src="funcoes.js"></script>
 
 </html>

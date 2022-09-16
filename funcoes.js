@@ -99,13 +99,13 @@ function pesquisar() {
 	}
 
 	var AnoLetivo = new Date().getFullYear().toString();
-	var DataNascimento = Nascimento.valueAsDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
+	var DataNascimento = Nascimento.valueAsDate.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 
-	var parametros = "nrRa=" + Ra + 
-					"&nrDigRa=" + DigRa + 
-					"&dsUfRa=" + UfRa + 
-					"&dtNascimento=" + DataNascimento + 
-					"&nrAnoLetivo=" + AnoLetivo;
+	var parametros = "nrRa=" + Ra +
+		"&nrDigRa=" + DigRa +
+		"&dsUfRa=" + UfRa +
+		"&dtNascimento=" + DataNascimento +
+		"&nrAnoLetivo=" + AnoLetivo;
 	request.open("GET", "https://sed.educacao.sp.gov.br/Boletim/GerarBoletimUnificadoExterno?" + parametros, true);
 	request.send()
 }
