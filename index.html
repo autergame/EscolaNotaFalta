@@ -52,6 +52,10 @@
 					required />
 			</div>
 			<div class="bFormDiv">
+				<label for="chkSalvarDados">Salvar dados:</label>
+				<input type="checkbox" id="chkSalvarDados" name="SalvarDados" autocomplete="off" required />
+			</div>
+			<div class="bFormDiv">
 				<button type="submit" onclick="pesquisar()">Pesquisar</button>
 			</div>
 		</div>
@@ -96,7 +100,7 @@
 			content:
 				"Este site <strong>NÃO</strong> é o oficial do Governo.<br>" +
 				"É um projeto pessoal que utiliza API de dados de boletim da <a href=\"https://sed.educacao.sp.gov.br/\">Secretaria Escolar Digital</a>.<br>" +
-				"Não me responsabilizo pelos dados exibidos ou como serão utilizados, qualquer dúvida, favor visualizar as informações diretamente no seu <a href=\"https://sed.educacao.sp.gov.br/boletim/boletimescolar\">Boletim</a>.<br>" +
+				"O autor e os envolvidos não se responsabilizam pelos dados exibidos ou como serão utilizados, qualquer dúvida, favor visualizar as informações diretamente no seu <a href=\"https://sed.educacao.sp.gov.br/boletim/boletimescolar\">Boletim</a>.<br>" +
 				"Observação: O cálculo do site é baseado nos bimestres que estão no boletim, que geralmente são bimestres passados, então é provável que o atual bimestre não seja contabilizado.<br>" +
 				"<br><strong>Você aceita esses termos?</strong>",
 			buttons: {
@@ -122,6 +126,7 @@
 	document.getElementById("txtNrDigRa").value = localStorage.getItem("DigRa");
 	document.getElementById("ddlUfRa").value = localStorage.getItem("UfRa");
 	document.getElementById("txtDtNascimento").valueAsDate = new Date(localStorage.getItem("Nascimento"))
+	document.getElementById("chkSalvarDados").checked = localStorage.getItem("SalvarDados") === "true";
 </script>
 
 <script src="funcoes.js"></script>

@@ -67,17 +67,27 @@ function pesquisar() {
 	var Ra = document.getElementById("txtNrRa").value;
 	var DigRa = document.getElementById("txtNrDigRa").value;
 	var UfRa = document.getElementById("ddlUfRa").value;
-	var Nascimento = document.getElementById("txtDtNascimento");
+	var DtNascimento = document.getElementById("txtDtNascimento");
+	var SalvarDados = document.getElementById("chkSalvarDados").checked;
 
-	if (Ra.length == 0 || DigRa.length == 0 || UfRa.length == 0 || Nascimento.value.length == 0) {
+	if (Ra.length == 0 || DigRa.length == 0 || UfRa.length == 0 || DtNascimento.value.length == 0) {
 		alert("Preencha todos os campos!");
 		return;
 	}
 
-	window.localStorage.setItem("Ra", Ra);
-	window.localStorage.setItem("DigRa", DigRa);
-	window.localStorage.setItem("UfRa", UfRa);
-	window.localStorage.setItem("Nascimento", Nascimento.valueAsDate);
+	if (SalvarDados) {
+		window.localStorage.setItem("Ra", Ra);
+		window.localStorage.setItem("DigRa", DigRa);
+		window.localStorage.setItem("UfRa", UfRa);
+		window.localStorage.setItem("Nascimento", DtNascimento.valueAsDate);
+		window.localStorage.setItem("SalvarDados", SalvarDados);
+	} else {
+		window.localStorage.setItem("Ra", "");
+		window.localStorage.setItem("DigRa", "");
+		window.localStorage.setItem("UfRa", "");
+		window.localStorage.setItem("Nascimento", "");
+		window.localStorage.setItem("SalvarDados", "");
+	}
 
 	var request = new XMLHttpRequest();
 	request.onload = function () {
@@ -99,7 +109,7 @@ function pesquisar() {
 	}
 
 	var AnoLetivo = new Date().getFullYear().toString();
-	var DataNascimento = Nascimento.valueAsDate.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+	var DataNascimento = DtNascimento.valueAsDate.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 
 	var parametros = "nrRa=" + Ra +
 		"&nrDigRa=" + DigRa +
