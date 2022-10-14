@@ -15,7 +15,10 @@ function analisarBoletim(boletim) {
 		var frequenciaTotal = 0
 		var frequenciaNulas = 0;
 		var frequenciaQuantidade = 0;
+
+		var eletiva = false;
 		var engajamentos = ["ET", "ES", "EP"];
+
 		var bimestres = disciplinas[i].Bimestres;
 
 		for (var j = 0; j < bimestres.length; j++) {
@@ -28,7 +31,7 @@ function analisarBoletim(boletim) {
 			} else {
 				frequenciaNulas += 1;
 			}
-			var nota = parseFloat(bimestres[j].DsNota.replace(/[^0-9.]/g, ""));
+			var nota = parseFloat(bimestres[j].DsNota.replace(/[^0-9.,]/g, ""));
 			if (!isNaN(nota)) {
 				notaTotal += nota;
 			} else {
@@ -36,18 +39,21 @@ function analisarBoletim(boletim) {
 			}
 		}
 
+		if (engajamentos.some(word => bimestres[0].DsNota == word) || notaTotal == 0) {
+			eletiva = true;
+		}
+
 		frequenciaTotal = (frequenciaTotal / frequenciaQuantidade).toPrecision(4);
 
-		if (engajamentos.some(word => bimestres[0].DsNota == word) == false) {
-			if (notaNulas != bimestres.length && frequenciaNulas != bimestres.length) {
-				var nomeDisciplina = disciplinas[i].DsDisciplina;
-				notas.push({
-					disciplina: capitalizarPrimeiraLetra(nomeDisciplina),
-					frequenciaTotal: frequenciaTotal,
-					notaTotal: notaTotal,
-					passou: notaTotal >= 20,
-				});
-			}
+		if (notaNulas != bimestres.length || frequenciaNulas != bimestres.length) {
+			var nomeDisciplina = disciplinas[i].DsDisciplina;
+			notas.push({
+				disciplina: capitalizarPrimeiraLetra(nomeDisciplina),
+				frequenciaTotal: frequenciaTotal,
+				notaTotal: notaTotal,
+				passou: notaTotal >= 20,
+				eletiva: eletiva,
+			});
 		}
 	}
 
@@ -160,6 +166,16 @@ function criarPresenca(dDiv, porcetagem) {
 }
 
 function criarTabela(dDiv, notas) {
+	notas.sort(function (a, b) {
+		if (a.eletiva > b.eletiva) {
+			return 1;
+		}
+		else if (a.eletiva < b.eletiva) {
+			return -1;
+		}
+		return 0;
+	});
+
 	var mostrarPrecisa = false;
 	for (var i = 0; i < notas.length; i++) {
 		if (notas[i].passou == false) {
@@ -213,26 +229,39 @@ function criarTabela(dDiv, notas) {
 		tdFrequenciaTotal.textContent = notas[i].frequenciaTotal + '%';
 		tr.appendChild(tdFrequenciaTotal);
 
-		var tdNotaTotal = document.createElement("td");
-		tdNotaTotal.textContent = notas[i].notaTotal;
-		tr.appendChild(tdNotaTotal);
+		if (!notas[i].eletiva) {
+			var tdNotaTotal = document.createElement("td");
+			tdNotaTotal.textContent = notas[i].notaTotal;
+			tr.appendChild(tdNotaTotal);
 
-		var tdPassou = document.createElement("td");
-		tdPassou.textContent = notas[i].passou ? "Sim" : "Não";
-		if (notas[i].passou) {
-			tdPassou.style = "background-color: rgb(0, 128, 0);"
-		} else {
-			tdPassou.style = "background-color: rgb(128, 0, 0);"
-		}
-		tr.appendChild(tdPassou);
-
-		if (mostrarPrecisa) {
-			var tdPrecisa = document.createElement("td");
-			var precisa = 20 - notas[i].notaTotal;
-			if (precisa > 0) {
-				tdPrecisa.textContent = precisa;
+			var tdPassou = document.createElement("td");
+			tdPassou.textContent = notas[i].passou ? "Sim" : "Não";
+			if (notas[i].passou) {
+				tdPassou.style = "background-color: rgb(0, 128, 0);"
+			} else {
+				tdPassou.style = "background-color: rgb(128, 0, 0);"
 			}
-			tr.appendChild(tdPrecisa);
+			tr.appendChild(tdPassou);
+
+			if (mostrarPrecisa) {
+				var tdPrecisa = document.createElement("td");
+				var precisa = 20 - notas[i].notaTotal;
+				if (precisa > 0) {
+					tdPrecisa.textContent = precisa;
+				}
+				tr.appendChild(tdPrecisa);
+			}
+		} else {
+			var tdNotaTotal = document.createElement("td");
+			tr.appendChild(tdNotaTotal);
+
+			var tdPassou = document.createElement("td");
+			tr.appendChild(tdPassou);
+
+			if (mostrarPrecisa) {
+				var tdPrecisa = document.createElement("td");
+				tr.appendChild(tdPrecisa);
+			}
 		}
 
 		ntTbody.appendChild(tr);

@@ -68,15 +68,21 @@ body {
 
 .bFormDiv label {
 	color: white;
-	font-size: 14px;
 	font-weight: 700;
+}
+
+.bFormDiv input[type=checkbox] {
+    top: 2px;
+	width: 15px;
+	height: 15px;
+    position: relative;
 }
 
 .bFormDiv input,
 .bFormDiv select,
 .bFormDiv button {
 	color: white;
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: 700;
 	padding: 6px 12px;
 	border-radius: 4px;
@@ -88,14 +94,14 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
-	background-color: #eee;
+	background-color: rgb(64, 64, 64);
 	border-collapse: collapse;
 }
 
 .ntTable th {
 	padding: 5px;
 	color: white;
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: 700;
 	border: 1px solid #000;
 	background-color: rgb(32, 32, 32);
@@ -104,7 +110,7 @@ body {
 .ntTable td {
 	padding: 5px;
 	color: white;
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: 700;
 	border: 1px solid #000;
 	background-color: rgb(64, 64, 64);
