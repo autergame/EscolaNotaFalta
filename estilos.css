@@ -66,6 +66,22 @@ body {
 	text-align: center;
 }
 
+.bFormDiv h4 {
+	color: white;
+	font-weight: 700;
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-bottom: 5px;
+	display: inline-block;
+}
+
+.bFormDiv a {
+	font-weight: 700;
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
 .bFormDiv label {
 	color: white;
 	font-weight: 700;

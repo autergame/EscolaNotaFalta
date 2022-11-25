@@ -1,6 +1,7 @@
 <html>
 
 <head>
+	<title>EscolaNotaFalta</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 	<link rel="stylesheet" href="estilos.css">
@@ -10,53 +11,60 @@
 	<div class="bDiv">
 		<div class="bForm">
 			<div class="bFormDiv">
-				<label for="txtNrRa">RA:</label>
-				<input type="text" id="txtNrRa" name="nmNrRa" maxlength="12" size="12" autocomplete="off" required />
-				-
-				<input aria-label="Dígito do RA" type="text" id="txtNrDigRa" name="nmNrDigRa" maxlength="2" size="2"
-					autocomplete="off" style="text-transform: uppercase;" required />
-				/
-				<select aria-label="UF do RA" id="ddlUfRa" name="nmUfRa" autocomplete="off" required>
-					<option></option>
-					<option value="AC">AC</option>
-					<option value="AL">AL</option>
-					<option value="AP">AP</option>
-					<option value="AM">AM</option>
-					<option value="BA">BA</option>
-					<option value="CE">CE</option>
-					<option value="DF">DF</option>
-					<option value="ES">ES</option>
-					<option value="GO">GO</option>
-					<option value="MA">MA</option>
-					<option value="MT">MT</option>
-					<option value="MS">MS</option>
-					<option value="MG">MG</option>
-					<option value="PA">PA</option>
-					<option value="PB">PB</option>
-					<option value="PR">PR</option>
-					<option value="PE">PE</option>
-					<option value="PI">PI</option>
-					<option value="RJ">RJ</option>
-					<option value="RN">RN</option>
-					<option value="RS">RS</option>
-					<option value="RO">RO</option>
-					<option value="RR">RR</option>
-					<option value="SC">SC</option>
-					<option value="SP">SP</option>
-					<option value="SE">SE</option>
-				</select>
-			</div>
-			<div class="bFormDiv">
-				<label for="txtDtNascimento">Data de Nascimento:</label>
-				<input type="date" id="txtDtNascimento" name="nmDtNascimento" maxlength="10" size="6" autocomplete="off"
-					required />
-			</div>
-			<div class="bFormDiv">
-				<label for="chkSalvarDados">Salvar dados:</label>
-				<input type="checkbox" id="chkSalvarDados" name="SalvarDados" autocomplete="off" required />
-			</div>
-			<div class="bFormDiv">
-				<button type="submit" onclick="pesquisar()">Pesquisar</button>
+				<div>
+					<h4>Site feito por: </h4>
+					<a href="https://github.com/autergame">autergame</a>
+				</div>
+				<div class="bFormDiv">
+					<label for="txtNrRa">RA:</label>
+					<input type="text" id="txtNrRa" name="nmNrRa" maxlength="12" size="12" autocomplete="off"
+						required />
+					-
+					<input aria-label="Dígito do RA" type="text" id="txtNrDigRa" name="nmNrDigRa" maxlength="2" size="2"
+						autocomplete="off" style="text-transform: uppercase;" required />
+					/
+					<select aria-label="UF do RA" id="ddlUfRa" name="nmUfRa" autocomplete="off" required>
+						<option></option>
+						<option value="AC">AC</option>
+						<option value="AL">AL</option>
+						<option value="AP">AP</option>
+						<option value="AM">AM</option>
+						<option value="BA">BA</option>
+						<option value="CE">CE</option>
+						<option value="DF">DF</option>
+						<option value="ES">ES</option>
+						<option value="GO">GO</option>
+						<option value="MA">MA</option>
+						<option value="MT">MT</option>
+						<option value="MS">MS</option>
+						<option value="MG">MG</option>
+						<option value="PA">PA</option>
+						<option value="PB">PB</option>
+						<option value="PR">PR</option>
+						<option value="PE">PE</option>
+						<option value="PI">PI</option>
+						<option value="RJ">RJ</option>
+						<option value="RN">RN</option>
+						<option value="RS">RS</option>
+						<option value="RO">RO</option>
+						<option value="RR">RR</option>
+						<option value="SC">SC</option>
+						<option value="SP">SP</option>
+						<option value="SE">SE</option>
+					</select>
+				</div>
+				<div class="bFormDiv">
+					<label for="txtDtNascimento">Data de Nascimento:</label>
+					<input type="date" id="txtDtNascimento" name="nmDtNascimento" maxlength="10" size="6"
+						autocomplete="off" required />
+				</div>
+				<div class="bFormDiv">
+					<label for="chkSalvarDados">Salvar dados:</label>
+					<input type="checkbox" id="chkSalvarDados" name="SalvarDados" autocomplete="off" required />
+				</div>
+				<div class="bFormDiv">
+					<button type="submit" onclick="pesquisar()">Pesquisar</button>
+				</div>
 			</div>
 		</div>
 	</div>
