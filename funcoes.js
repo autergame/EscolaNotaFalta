@@ -94,9 +94,21 @@ function pesquisar() {
 		window.localStorage.setItem("SalvarDados", "");
 	}
 
+	let loader = document.getElementById("loader");
+	let loaderText = document.getElementById("loaderText");
+
+	loader.style.marginTop = "15px";
+	loader.style.display = "block";
+	loaderText.style.display = "block";
+	loaderText.innerText = "Espere: Carregando boletim";
+
 	var request = new XMLHttpRequest();
 	request.onload = function () {
 		if (request.status == 200) {
+			loader.style.marginTop = "";
+			loader.style.display = "none";
+			loaderText.style.display = "none";
+
 			var boletim = pegarBoletim(request.responseText);
 			var [notas, porcetagem] = analisarBoletim(boletim);
 

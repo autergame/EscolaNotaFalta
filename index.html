@@ -15,7 +15,7 @@
 					<h4>EscolaNotaFalta - Site feito por: </h4>
 					<a href="https://github.com/autergame">autergame</a>
 				</div>
-				<div class="bFormDiv">
+				<div>
 					<label for="txtNrRa">RA:</label>
 					<input type="text" id="txtNrRa" name="nmNrRa" maxlength="12" size="12" autocomplete="off"
 						required />
@@ -53,17 +53,19 @@
 						<option value="SE">SE</option>
 					</select>
 				</div>
-				<div class="bFormDiv">
+				<div>
 					<label for="txtDtNascimento">Data de Nascimento:</label>
 					<input type="date" id="txtDtNascimento" name="nmDtNascimento" maxlength="10" size="6"
 						autocomplete="off" required />
 				</div>
-				<div class="bFormDiv">
+				<div>
 					<label for="chkSalvarDados">Salvar dados:</label>
 					<input type="checkbox" id="chkSalvarDados" name="SalvarDados" autocomplete="off" required />
 				</div>
-				<div class="bFormDiv">
-					<button type="submit" onclick="pesquisar()">Pesquisar</button>
+				<button type="submit" onclick="pesquisar()">Pesquisar</button>
+				<div>
+					<img id="loader" style="display:none" src="loading.svg" />
+					<h4 id="loaderText"></h4>
 				</div>
 			</div>
 		</div>

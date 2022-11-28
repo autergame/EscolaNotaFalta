@@ -68,17 +68,23 @@ body {
 
 .bFormDiv h4 {
 	color: white;
+	margin-top: 0px;
 	font-weight: 700;
 	padding-top: 0px;
-	margin-top: 0px;
 	margin-bottom: 5px;
 	display: inline-block;
 }
 
+.bFormDiv img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .bFormDiv a {
+	margin-top: 0px;
 	font-weight: 700;
 	padding-top: 0px;
-	margin-top: 0px;
 	margin-bottom: 0px;
 }
 
@@ -100,6 +106,7 @@ body {
 	color: white;
 	font-size: 15px;
 	font-weight: 700;
+	margin-top: 15px;
 	padding: 6px 12px;
 	border-radius: 4px;
 	border: 1px solid #ccc;
