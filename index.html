@@ -20,10 +20,10 @@
 					<input type="text" id="txtNrRa" name="nmNrRa" maxlength="12" size="12" autocomplete="off"
 						required />
 					-
-					<input aria-label="Dígito do RA" type="text" id="txtNrDigRa" name="nmNrDigRa" maxlength="2" size="2"
-						autocomplete="off" style="text-transform: uppercase;" required />
+					<input type="text" id="txtNrDigRa" name="nmNrDigRa" maxlength="2" size="2" autocomplete="off"
+						style="text-transform: uppercase;" required />
 					/
-					<select aria-label="UF do RA" id="ddlUfRa" name="nmUfRa" autocomplete="off" required>
+					<select id="ddlUfRa" name="nmUfRa" autocomplete="off" required>
 						<option></option>
 						<option value="AC">AC</option>
 						<option value="AL">AL</option>
@@ -57,6 +57,11 @@
 					<label for="txtDtNascimento">Data de Nascimento:</label>
 					<input type="date" id="txtDtNascimento" name="nmDtNascimento" maxlength="10" size="6"
 						autocomplete="off" required />
+				</div>
+				<div>
+					<label for="txtNrAnoLetivo">Ano Letivo:</label>
+					<input type="number" id="txtNrAnoLetivo" name="nmNrAnoLetivo" maxlength="4" size="4"
+						style="width: 80px !important" autocomplete="off" required />
 				</div>
 				<div>
 					<label for="chkSalvarDados">Salvar dados:</label>
@@ -137,6 +142,9 @@
 	document.getElementById("ddlUfRa").value = localStorage.getItem("UfRa");
 	document.getElementById("txtDtNascimento").valueAsDate = new Date(localStorage.getItem("Nascimento"))
 	document.getElementById("chkSalvarDados").checked = localStorage.getItem("SalvarDados") === "true";
+
+	var AnoLetivo = localStorage.getItem("AnoLetivo");
+	document.getElementById("txtNrAnoLetivo").value = AnoLetivo != undefined ? AnoLetivo : new Date().getFullYear();
 </script>
 
 <script src="funcoes.js"></script>

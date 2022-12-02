@@ -1,77 +1,8 @@
-function capitalizarPrimeiraLetra(texto) {
-	var textoMenor = texto.toLowerCase();
-	return textoMenor.charAt(0).toUpperCase() + textoMenor.slice(1);
-}
-
-function analisarBoletim(boletim) {
-	var notas = [];
-	var porcentagemTotal = 0;
-	var porcentagemQuatidade = 0;
-	var disciplinas = boletim.TpsEnsino[0].Unidades[0].Disciplinas;
-
-	for (var i = 0; i < disciplinas.length; i++) {
-		var notaTotal = 0;
-		var notaNulas = 0;
-		var frequenciaTotal = 0
-		var frequenciaNulas = 0;
-		var frequenciaQuantidade = 0;
-
-		var eletiva = false;
-		var engajamentos = ["ET", "ES", "EP"];
-
-		var bimestres = disciplinas[i].Bimestres;
-
-		for (var j = 0; j < bimestres.length; j++) {
-			var frequencia = parseInt(bimestres[j].DsPFrequencia.replace(/[^0-9]/g, ""), 10);
-			if (!isNaN(frequencia)) {
-				frequenciaTotal += frequencia;
-				porcentagemTotal += frequencia;
-				frequenciaQuantidade += 1;
-				porcentagemQuatidade += 1;
-			} else {
-				frequenciaNulas += 1;
-			}
-			var nota = parseFloat(bimestres[j].DsNota.replace(/[^0-9.,]/g, ""));
-			if (!isNaN(nota)) {
-				notaTotal += nota;
-			} else {
-				notaNulas += 1;
-			}
-		}
-
-		if (engajamentos.some(word => bimestres[0].DsNota == word) || notaTotal == 0) {
-			eletiva = true;
-		}
-
-		frequenciaTotal = (frequenciaTotal / frequenciaQuantidade).toPrecision(4);
-
-		if (notaNulas != bimestres.length || frequenciaNulas != bimestres.length) {
-			var nomeDisciplina = disciplinas[i].DsDisciplina;
-			notas.push({
-				disciplina: capitalizarPrimeiraLetra(nomeDisciplina),
-				frequenciaTotal: frequenciaTotal,
-				notaTotal: notaTotal,
-				eletiva: eletiva,
-			});
-		}
-	}
-
-	var porcentagem = (porcentagemTotal / porcentagemQuatidade).toPrecision(4);
-
-	return [notas, porcentagem];
-}
-
-function pegarBoletim(textoRetornado) {
-	var parser = new DOMParser();
-	var htmlDoc = parser.parseFromString(textoRetornado, "text/html");
-	var boletimJsonScript = htmlDoc.querySelector("body > script:nth-child(2)").innerHTML;
-	return JSON.parse(boletimJsonScript.match(/\{.*}/g));
-}
-
 function pesquisar() {
 	var Ra = document.getElementById("txtNrRa").value;
 	var DigRa = document.getElementById("txtNrDigRa").value;
 	var UfRa = document.getElementById("ddlUfRa").value;
+	var AnoLetivo = document.getElementById("txtNrAnoLetivo").value;
 	var DtNascimento = document.getElementById("txtDtNascimento");
 	var SalvarDados = document.getElementById("chkSalvarDados").checked;
 
@@ -80,16 +11,25 @@ function pesquisar() {
 		return;
 	}
 
+	var AnoAtual = new Date().getFullYear();
+
+	if (AnoLetivo < 2007 || AnoLetivo > AnoAtual) {
+		alert("Escolha um ano entre 2007 e " + AnoAtual);
+		return;
+	}
+
 	if (SalvarDados) {
 		window.localStorage.setItem("Ra", Ra);
 		window.localStorage.setItem("DigRa", DigRa);
 		window.localStorage.setItem("UfRa", UfRa);
+		window.localStorage.setItem("AnoLetivo", AnoLetivo);
 		window.localStorage.setItem("Nascimento", DtNascimento.valueAsDate);
 		window.localStorage.setItem("SalvarDados", SalvarDados);
 	} else {
 		window.localStorage.setItem("Ra", "");
 		window.localStorage.setItem("DigRa", "");
 		window.localStorage.setItem("UfRa", "");
+		window.localStorage.setItem("AnoLetivo", "");
 		window.localStorage.setItem("Nascimento", "");
 		window.localStorage.setItem("SalvarDados", "");
 	}
@@ -109,17 +49,21 @@ function pesquisar() {
 			loader.style.display = "none";
 			loaderText.style.display = "none";
 
-			var boletim = pegarBoletim(request.responseText);
-			var [notas, porcetagem] = analisarBoletim(boletim);
-
 			var dDiv = document.querySelector(".dDiv");
 			while (dDiv.firstChild) {
 				dDiv.removeChild(dDiv.firstChild);
 			}
 
-			criarNome(dDiv, boletim.DsNome);
-			criarPresenca(dDiv, porcetagem);
-			criarTabela(dDiv, notas);
+			var boletim = pegarBoletim(request.responseText);
+			if (boletim) {
+				var [escola, nome, notas, porcetagem] = analisarBoletim(boletim);
+				criarTexto(dDiv, "Escola: " + escola);
+				criarTexto(dDiv, "Nome: " + nome);
+				criarPresenca(dDiv, porcetagem);
+				criarTabela(dDiv, notas);
+			} else {
+				alert("As informações do boletim ainda não estão disponíveis para consulta!");
+			}
 		} else if (request.status == 299) {
 			alert(JSON.parse(request.responseText).mensagem);
 		} else {
@@ -127,7 +71,6 @@ function pesquisar() {
 		}
 	}
 
-	var AnoLetivo = new Date().getFullYear().toString();
 	var DataNascimento = DtNascimento.valueAsDate.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 
 	var parametros = "nrRa=" + Ra +
@@ -139,19 +82,94 @@ function pesquisar() {
 	request.send()
 }
 
-function criarNome(dDiv, nome) {
+function pegarBoletim(textoRetornado) {
+	var parser = new DOMParser();
+	var htmlDoc = parser.parseFromString(textoRetornado, "text/html");
+	var boletimJsonScript = htmlDoc.querySelector("body > script:nth-child(2)").innerHTML;
+	return JSON.parse(boletimJsonScript.match(/\{.*}/g));
+}
+
+function analisarBoletim(boletim) {
+	var notas = [];
+	var presencaTotal = 0;
+	var presencaQuatidade = 0;
+
+	var nome = boletim.DsNome;
+	var escola = boletim.TpsEnsino[0].Unidades[0].DsEscola;
+	var disciplinas = boletim.TpsEnsino[0].Unidades[0].Disciplinas;
+
+	for (var i = 0; i < disciplinas.length; i++) {
+		var notaTotal = 0;
+		var notaNulas = 0;
+		var frequenciaTotal = 0
+		var frequenciaNulas = 0;
+		var frequenciaQuantidade = 0;
+
+		var eletiva = false;
+		var engajamentos = ["ET", "ES", "EP"];
+
+		var bimestres = disciplinas[i].Bimestres;
+
+		for (var j = 0; j < bimestres.length; j++) {
+			var frequencia = parseInt(bimestres[j].DsPFrequencia.replace(/[^0-9]/g, ""), 10);
+			if (!isNaN(frequencia)) {
+				frequenciaTotal += frequencia;
+				presencaTotal += frequencia;
+				frequenciaQuantidade += 1;
+				presencaQuatidade += 1;
+			} else {
+				frequenciaNulas += 1;
+			}
+			var nota = parseFloat(bimestres[j].DsNota.replace(/[^0-9.,]/g, ""));
+			if (!isNaN(nota)) {
+				notaTotal += nota;
+			} else {
+				notaNulas += 1;
+			}
+		}
+
+		if (engajamentos.some(word => bimestres[0].DsNota == word) || notaTotal == 0) {
+			eletiva = true;
+		}
+
+		frequenciaTotal = (frequenciaTotal / frequenciaQuantidade);
+		frequenciaTotal = frequenciaTotal > 0.0 ? frequenciaTotal.toPrecision(4) : "0";
+
+		if (notaNulas != bimestres.length || frequenciaNulas != bimestres.length) {
+			var nomeDisciplina = disciplinas[i].DsDisciplina;
+			notas.push({
+				disciplina: nomeDisciplina,
+				frequenciaTotal: frequenciaTotal,
+				notaTotal: notaTotal,
+				eletiva: eletiva,
+			});
+		}
+	}
+
+	var presenca = presencaTotal / presencaQuatidade;
+	presenca = presenca > 0.0 ? presenca.toPrecision(4) : "0";
+
+	return [escola, nome, notas, presenca];
+}
+
+function capitalizarPrimeiraLetra(texto) {
+	var textoMenor = texto.toLowerCase();
+	return textoMenor.charAt(0).toUpperCase() + textoMenor.slice(1);
+}
+
+function criarTexto(dDiv, texto) {
 	var nDiv = document.createElement("Div");
 	nDiv.className = "nDiv";
 
 	var nH2 = document.createElement("h2");
 	nH2.className = "nH2";
-	nH2.textContent = "Nome: " + nome;
+	nH2.textContent = texto;
 	nDiv.appendChild(nH2);
 
 	dDiv.appendChild(nDiv);
 }
 
-function criarPresenca(dDiv, porcetagem) {
+function criarPresenca(dDiv, presenca) {
 	var pDiv = document.createElement("Div");
 	pDiv.className = "pDiv";
 
@@ -167,12 +185,12 @@ function criarPresenca(dDiv, porcetagem) {
 
 	var pnH2 = document.createElement("h2");
 	pnH2.className = "pnH2";
-	pnH2.textContent = porcetagem + "%";
-	if (porcetagem >= 90) {
+	pnH2.textContent = presenca + "%";
+	if (presenca >= 90) {
 		pnH2.style = "color: rgb(0, 255, 0);"
-	} else if (porcetagem >= 80) {
+	} else if (presenca >= 80) {
 		pnH2.style = "color: rgb(255, 255, 0);"
-	} else if (porcetagem < 75) {
+	} else if (presenca < 75) {
 		pnH2.style = "color: rgb(255, 0, 0);"
 	}
 	pDiv.appendChild(pnH2);
@@ -219,17 +237,17 @@ function criarTabela(dDiv, notas) {
 		var tr = document.createElement("tr");
 
 		var tdDisciplina = document.createElement("td");
-		tdDisciplina.textContent = notas[i].disciplina;
+		tdDisciplina.textContent = capitalizarPrimeiraLetra(notas[i].disciplina);
 		tr.appendChild(tdDisciplina);
 
 		var porcetagem = notas[i].frequenciaTotal;
 		var tdFrequenciaTotal = document.createElement("td");
 		tdFrequenciaTotal.textContent = porcetagem + '%';
-		if (porcetagem >= 90) {
+		if (porcetagem >= 90.0) {
 			tdFrequenciaTotal.style = "color: rgb(0, 255, 0);"
-		} else if (porcetagem >= 80) {
+		} else if (porcetagem >= 80.0) {
 			tdFrequenciaTotal.style = "color: rgb(255, 255, 0);"
-		} else if (porcetagem < 75) {
+		} else if (porcetagem < 75.0) {
 			tdFrequenciaTotal.style = "color: rgb(255, 0, 0);"
 		}
 		tr.appendChild(tdFrequenciaTotal);
